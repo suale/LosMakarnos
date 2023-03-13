@@ -14,6 +14,11 @@ namespace LosMakarnos
     {
         private int[] indexData;
         private int masaNo;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private FlowLayoutPanel flowLayoutPanel2;
+        private ListBox listBox1;
+
+
         public MasaAdisyon(int[] indexData)
         {
             InitializeComponent();
@@ -22,52 +27,151 @@ namespace LosMakarnos
             label1.Text = masaNo.ToString();
 
             DummyData dummyData = new DummyData();
+            //ListBox listBox1 = new ListBox();
 
-         ;
+            //listBox1.Location = new Point(this.ClientSize.Width - 390, listBox1.Location.Y);
+            //listBox1.Width = 380;
+            //listBox1.BorderStyle = BorderStyle.FixedSingle;
+            //listBox1.BackColor = Color.LightGray;
+            //listBox1.ForeColor = Color.DarkBlue;
+            //listBox1.Items.Add("Item 1");
+            //listBox1.Items.Add("Item 2");
+            //listBox1.Items.Add("Item 3");
+            //this.Controls.Add(listBox1); // Add the ListBox to the form's Controls collection
+
 
             int numButtons = dummyData.Kategoriler.Count;
 
-            // Create a new FlowLayoutPanel
-            FlowLayoutPanel flowLayoutPanel1 = new FlowLayoutPanel();
+            flowLayoutPanel1 = new FlowLayoutPanel();
 
-            // Set the FlowLayoutPanel's properties
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Dock = DockStyle.Left;
             flowLayoutPanel1.BorderStyle = BorderStyle.Fixed3D;
             flowLayoutPanel1.BackColor = Color.Black;
-            
+
             this.Controls.Add(flowLayoutPanel1);
 
-            //Button btn1 = new Button();
-            //btn1.Text = "deneme";
-            //flowLayoutPanel1.Controls.Add(btn1);
+
             for (int i = 0; i < numButtons; i++)
             {
-                // Create a new button
                 Button button = new Button();
 
-                // Set the button properties
                 button.Text = dummyData.Kategoriler[i].KategoriAd;
-                button.Width = flowLayoutPanel1.Width*12/ 13;
+                button.Tag = dummyData.Kategoriler[i];
+
+                button.Width = flowLayoutPanel1.Width * 12 / 13;
                 button.Height = flowLayoutPanel1.Height / 6;
                 button.BackColor = Color.WhiteSmoke;
                 button.ForeColor = Color.Black;
-                // Add the button to the FlowLayoutPanel
+                button.Click += new EventHandler(Button_Click);
+
                 flowLayoutPanel1.Controls.Add(button);
 
-                // Add a Click event handler to the button
-                
+
+
             }
 
 
         }
-
-        private void MasaAdisyon_Load(object sender, EventArgs e)
+        private void Button_Click(object sender, EventArgs e)
         {
+            Kategori kategori = (Kategori)((Button)sender).Tag;
+            List<Urun> urunler = new List<Urun>();
+
+            DummyData dummyData = new DummyData();
+            foreach (var item in dummyData.Urunler)
+            {
+                if (item.KategoriID == kategori.KategoriID)
+                {
+                    urunler.Add(item);
+                }
+            }
+            flowLayoutPanel2 = new FlowLayoutPanel();
+
+            flowLayoutPanel2.FlowDirection = FlowDirection.LeftToRight;
+            flowLayoutPanel2.AutoSize = true;
+            int maxFlowPanel2Width = this.Width - flowLayoutPanel1.Width - 400;
+            flowLayoutPanel2.MaximumSize = new Size(maxFlowPanel2Width, 0);
+            flowLayoutPanel2.WrapContents = true;
+            flowLayoutPanel2.BorderStyle = BorderStyle.Fixed3D;
+            flowLayoutPanel2.BackColor = Color.Black;
+       
+            flowLayoutPanel2.Location = new Point(flowLayoutPanel1.Width + 10, 0);
+
+            this.Controls.Add(flowLayoutPanel2);
+
+            int numColumns = 3; // Number of columns
+            int buttonWidth = (flowLayoutPanel2.ClientSize.Width - (numColumns + 1) * flowLayoutPanel2.Margin.Horizontal) / (numColumns - 2);
+
+
+
+            foreach (var product in urunler)
+            {
+                Button button = new Button();
+
+                button.Text = product.UrunAd;
+                button.Width = buttonWidth;
+                button.Margin = new Padding(10); // Set margin between buttons
+
+                button.Height = 100;
+                button.BackColor = Color.WhiteSmoke;
+                button.ForeColor = Color.Black;
+
+                // Attach event handler to button
+                 button.Click += new EventHandler(ProductButton_Click);
+
+                flowLayoutPanel2.Controls.Add(button);
+            }
+            Button buttonKapa = new Button();
+            buttonKapa.Click += new EventHandler(ButtonKapa_Click);
+            buttonKapa.Text = "geri";
+            buttonKapa.Width = 220;
+            buttonKapa.Height = 150;
+            buttonKapa.BackColor = Color.IndianRed;
+            buttonKapa.ForeColor = Color.Black;
+            flowLayoutPanel2.Controls.Add(buttonKapa);
+
+            if (listBox1 == null)
+            {
+                   listBox1 = new ListBox();
+
+            listBox1.Location = new Point(flowLayoutPanel2.Right + 10, flowLayoutPanel2.Top);
+            listBox1.Width = 380;
+            listBox1.Height = flowLayoutPanel2.Height;
+            listBox1.BorderStyle = BorderStyle.FixedSingle;
+            listBox1.BackColor = Color.LightGray;
+            listBox1.ForeColor = Color.DarkBlue;
+            listBox1.Items.Add("Item 1");
+            listBox1.Items.Add("Item 2");
+            listBox1.Items.Add("Item 3");
+            this.Controls.Add(listBox1); 
+            }
+
 
 
         }
 
-        
+        private void ProductButton_Click(object? sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+            string urunAd = button.Text;
+
+            listBox1.Items.Add(urunAd);
+        }
+
+        private void ButtonKapa_Click(object sender, EventArgs e)
+        {
+
+            this.Controls.Remove(flowLayoutPanel2);
+        }
+
+        private void MasaAdisyon_Load(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Maximized;
+
+
+        }
+
+
     }
 }

@@ -10,7 +10,7 @@ namespace LosMakarnos
     {
         public int UrunID { get; set; }
         public string UrunAd { get; set; }
-        public string KategoriID { get; set; }
+        public int KategoriID { get; set; }
         public decimal UrunFiyat { get; set; }
     }
 }

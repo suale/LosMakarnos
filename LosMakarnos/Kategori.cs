@@ -9,7 +9,6 @@ namespace LosMakarnos
     public class Kategori
     {
         public int KategoriID { get; set; }
-        public string KategoriAd { get; set; }
-        public List<Urun> Urunler { get; set; }
+        public string KategoriAd { get; set; }     
     }
 }
