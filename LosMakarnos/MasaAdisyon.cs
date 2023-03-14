@@ -162,7 +162,10 @@ namespace LosMakarnos
         private void ButtonKapa_Click(object sender, EventArgs e)
         {
 
-            this.Controls.Remove(flowLayoutPanel2);
+            Button button = (Button)sender;
+            FlowLayoutPanel panel = (FlowLayoutPanel)button.Parent;
+            panel.Controls.Remove(button);
+            this.Controls.Remove(panel);
         }
 
         private void MasaAdisyon_Load(object sender, EventArgs e)
