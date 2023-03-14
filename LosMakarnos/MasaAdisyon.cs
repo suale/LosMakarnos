@@ -27,18 +27,7 @@ namespace LosMakarnos
             label1.Text = masaNo.ToString();
 
             DummyData dummyData = new DummyData();
-            //ListBox listBox1 = new ListBox();
-
-            //listBox1.Location = new Point(this.ClientSize.Width - 390, listBox1.Location.Y);
-            //listBox1.Width = 380;
-            //listBox1.BorderStyle = BorderStyle.FixedSingle;
-            //listBox1.BackColor = Color.LightGray;
-            //listBox1.ForeColor = Color.DarkBlue;
-            //listBox1.Items.Add("Item 1");
-            //listBox1.Items.Add("Item 2");
-            //listBox1.Items.Add("Item 3");
-            //this.Controls.Add(listBox1); // Add the ListBox to the form's Controls collection
-
+            
 
             int numButtons = dummyData.Kategoriler.Count;
 
@@ -95,7 +84,7 @@ namespace LosMakarnos
             flowLayoutPanel2.WrapContents = true;
             flowLayoutPanel2.BorderStyle = BorderStyle.Fixed3D;
             flowLayoutPanel2.BackColor = Color.Black;
-       
+
             flowLayoutPanel2.Location = new Point(flowLayoutPanel1.Width + 10, 0);
 
             this.Controls.Add(flowLayoutPanel2);
@@ -118,7 +107,7 @@ namespace LosMakarnos
                 button.ForeColor = Color.Black;
 
                 // Attach event handler to button
-                 button.Click += new EventHandler(ProductButton_Click);
+                button.Click += new EventHandler(ProductButton_Click);
 
                 flowLayoutPanel2.Controls.Add(button);
             }
@@ -133,18 +122,30 @@ namespace LosMakarnos
 
             if (listBox1 == null)
             {
-                   listBox1 = new ListBox();
+                listBox1 = new ListBox();
 
-            listBox1.Location = new Point(flowLayoutPanel2.Right + 10, flowLayoutPanel2.Top);
-            listBox1.Width = 380;
-            listBox1.Height = flowLayoutPanel2.Height;
-            listBox1.BorderStyle = BorderStyle.FixedSingle;
-            listBox1.BackColor = Color.LightGray;
-            listBox1.ForeColor = Color.DarkBlue;
-            listBox1.Items.Add("Item 1");
-            listBox1.Items.Add("Item 2");
-            listBox1.Items.Add("Item 3");
-            this.Controls.Add(listBox1); 
+                listBox1.Location = new Point(flowLayoutPanel2.Right + 10, flowLayoutPanel2.Top);
+                listBox1.Width = 380;
+                listBox1.Height = flowLayoutPanel2.Height;
+                listBox1.BorderStyle = BorderStyle.FixedSingle;
+                listBox1.BackColor = Color.LightGray;
+                listBox1.ForeColor = Color.DarkBlue;
+                listBox1.Items.Add("Item 1");
+                listBox1.Items.Add("Item 2");
+                listBox1.Items.Add("Item 3");
+                listBox1.SelectionMode = SelectionMode.MultiExtended;
+
+                this.Controls.Add(listBox1);
+                Button listedenSil = new Button();
+                listedenSil.Location = new Point(listBox1.Left, listBox1.Bottom + 10);
+                listedenSil.Text = "Sil";
+                listedenSil.Width = 220;
+                listedenSil.Height = 150;
+                listedenSil.BackColor = Color.IndianRed;
+                listedenSil.ForeColor = Color.Black;
+                listedenSil.Click += new EventHandler(listedenSil_Click);
+
+                this.Controls.Add(listedenSil);
             }
 
 
@@ -175,6 +176,12 @@ namespace LosMakarnos
 
         }
 
-
+        private void listedenSil_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex != -1) // check if an item is selected
+            {
+                listBox1.Items.RemoveAt(listBox1.SelectedIndex); // remove the selected item
+            }
+        }
     }
 }
